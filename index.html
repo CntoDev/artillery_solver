@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+<head>
+</head>
+<body>
+<div>
+  <label>Weapon:</label>
+  <select id="muzzle_velocity">
+    <option value="152.5">M119A2 - Short range</option>
+    <option value="240">M119A2 - Medium range</option>
+    <option value="390">M119A2 - Long range</option>
+    <option value="70">Mk6/M252 mortar - Short range</option>
+    <option value="140">Mk6/M252 mortar - Medium range</option>
+    <option value="200">Mk6/M252 mortar - Long range</option>
+  </select>
+</div>
+<hr>
+<div>
+  <label>Height difference:</label>
+  <input type="text" id="height_difference" value="0" style="width: 4em;">
+  <label>m</label>
+</div>
+<div>
+  <label>Distance:</label>
+  <input type="text" id="distance" value="1000" style="width: 5em;">
+  <label>m</label>
+</div>
+<hr>
+<div>
+  <label>Angle:</label>
+  <input type="text" readonly id="angleDeg" style="width: 5em;">
+  <label>deg</label>
+</div>
+<div>
+  <label>Alt. angle:</label>
+  <input type="text" readonly id="angleDeg2" style="width: 5em;">
+  <label>deg</label>
+</div>
+<hr>
+<div>
+  <label>Angle:</label>
+  <input type="text" readonly id="angleMil" style="width: 5em;">
+  <label>mil</label>
+</div>
+<div>
+  <label>Alt. angle:</label>
+  <input type="text" readonly id="angleMil2" style="width: 5em;">
+  <label>mil</label>
+</div>
+<script type="text/javascript">
+document.getElementById('muzzle_velocity').addEventListener('change', calculateAngle);
+document.getElementById('height_difference').addEventListener('keydown', calculateAngle);
+document.getElementById('distance').addEventListener('keydown', calculateAngle);
+
+function calculateAngle() {
+  const g = 9.81;
+  const v = Number.parseFloat(document.getElementById('muzzle_velocity').value);
+  const x = Number.parseFloat(document.getElementById('distance').value);
+  const y = Number.parseFloat(document.getElementById('height_difference').value);
+
+  const v2 = v * v;
+
+  document.getElementById('angleDeg').value = (Math.atan((v2 + Math.sqrt((v2 * v2) - g * ((g * x * x) + (2 * y * v2)))) / (9.81 * x)) / Math.PI * 180).toFixed(3);
+  document.getElementById('angleDeg2').value = (Math.atan((v2 - Math.sqrt((v2 * v2) - g * ((g * x * x) + (2 * y * v2)))) / (9.81 * x)) / Math.PI * 180).toFixed(3);
+  document.getElementById('angleMil').value = (Math.atan((v2 + Math.sqrt((v2 * v2) - g * ((g * x * x) + (2 * y * v2)))) / (9.81 * x)) * 1000).toFixed(3);
+  document.getElementById('angleMil2').value = (Math.atan((v2 - Math.sqrt((v2 * v2) - g * ((g * x * x) + (2 * y * v2)))) / (9.81 * x)) * 1000).toFixed(3);
+}
+
+calculateAngle();
+</script>
+</body>
+</htm>
