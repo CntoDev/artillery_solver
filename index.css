@@ -1,0 +1,36 @@
+body {
+  position: fixed;
+  margin: 0;
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 16px;
+}
+
+.AppContainer {
+  padding: 0.5em;
+}
+
+.Parameter {
+
+}
+
+.Label {
+  display: inline-block;
+  width: 6em;
+  text-align: right;
+}
+
+.Unit {
+  display: inline-block;
+  width: 10em;
+  text-align: left;
+  font-size: x-small;
+}
+
+.Field {
+  display: inline-block;
+  width: 8em;
+}
+
+.PlatformSelect {
+
+}
