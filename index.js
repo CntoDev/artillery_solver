@@ -96,9 +96,9 @@ function selectUnit(unit) {
 }
 
 function selectRange(range) {
-  state.unit.button.classList.toggle('isActive');
+  state.range.button.classList.toggle('isActive');
   state.range = range;
-  state.unit.button.classList.toggle('isActive');
+  state.range.button.classList.toggle('isActive');
 }
 
 function addRangeToggleButtons() {
