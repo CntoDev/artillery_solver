@@ -1,26 +1,25 @@
 <!doctype html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>CNTO Artillery Calculator App</title>
 <link rel="stylesheet" href="index.css"></link>
 </head>
 <body>
 <div class="AppContainer">
+  <div class="Header">
+    <label>CNTO Artillery Calculator</label>
+  </div>
   <div class="Parameter">
     <label class="Label">Weapon:</label>
-    <select class="PlatformSelect" id="muzzle_velocity">
-      <option value="152.5">M119A2 - Short range</option>
-      <option value="240">M119A2 - Medium range</option>
-      <option value="390">M119A2 - Long range</option>
-      <option value="70">Mk6/M252 mortar - Short range</option>
-      <option value="140">Mk6/M252 mortar - Medium range</option>
-      <option value="200">Mk6/M252 mortar - Long range</option>
-    </select>
+    <select class="PlatformSelect" id="weaponPlatform"></select>
   </div>
-  <hr>
+  <div id="rangeToggle" class="Parameter">
+    <label class="Label">Range:</label>
+  </div>
   <div class="Parameter">
     <label class="Label">El. diff.:</label>
-    <input class="Field" type="text" id="height_difference" value="0">
+    <input class="Field" type="text" id="heightDifference" value="0">
     <label class="Unit">m</label>
   </div>
   <div class="Parameter">
@@ -28,12 +27,10 @@
     <input class="Field" type="text" id="distance" value="1000">
     <label class="Unit">m</label>
   </div>
-  <hr>
-  <div id="unitToggle" class="UnitToggleBar">
+  <div id="unitToggle" class="Parameter">
     <label class="Label">Unit:</label>
   </div>
-  <hr>
-  <div class="Results">
+  <div class="Parameter">
     <div class="Result">
       <label class="Label">Angle #1:</label>
       <input class="Field" type="text" readonly id="result">
@@ -45,8 +42,6 @@
       <label class="Unit" id="altResultUnit"></label>
     </div>
   </div>
-  <hr>
-
 </div>
 <script type="text/javascript" src="index.js"></script>
 </body>

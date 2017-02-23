@@ -1,73 +1,144 @@
 'use strict';
 
-document.getElementById('muzzle_velocity').addEventListener('change', calculateAngle);
-document.getElementById('height_difference').addEventListener('keydown', calculateAngle);
+document.getElementById('heightDifference').addEventListener('keydown', calculateAngle);
 document.getElementById('distance').addEventListener('keydown', calculateAngle);
 
 const g = 9.80665;
 
-const units = [
+const ranges = [
   {
-    name: "deg",
-    convert: radians => radians / Math.PI * 180,
+    name: 'Short',
+    index: 0
   },
   {
-    name: "NATO mrad",
-    convert: radians => radians * 1018.592,
+    name: 'Medium',
+    index: 1
   },
   {
-    name: "WP mrad",
-    convert: radians => radians * 954.930,
+    name: 'Long',
+    index: 2
+  }
+];
+
+const weapons = [
+  {
+    name: 'M119A2',
+    muzzleVelocity: [152.5, 240, 390],
+    defaultUnit: 'deg',
   },
   {
-    name: "mrad",
-    convert: radians => radians * 1000,
-  },
-  {
-    name: "rad",
-    convert: radians => radians,
+    name: 'M252',
+    muzzleVelocity: [70, 140, 200],
+    defaultUnit: 'NATO mrad',
   },
 ];
 
-let activeUnit = units[0];
+const units = [
+  {
+    name: 'deg',
+    convert: radians => radians / Math.PI * 180,
+  },
+  {
+    name: 'NATO mrad',
+    convert: radians => radians * 1018.592,
+  },
+  {
+    name: 'WP mrad',
+    convert: radians => radians * 954.930,
+  },
+/*{
+    name: 'mrad',
+    convert: radians => radians * 1000,
+  },
+  {
+    name: 'rad',
+    convert: radians => radians,
+  },*/
+];
 
+//======================================================================================================================
+
+const state = {
+  weapon: weapons[0],
+  range: ranges[0],
+  unit: units[0],
+}
+
+addWeaponPlatforms();
+addRangeToggleButtons();
 addUnitToggleButtons();
 calculateAngle();
 
 //======================================================================================================================
 
+function addWeaponPlatforms() {
+  const select = document.getElementById('weaponPlatform');
+  weapons.forEach((weapon, index) => {
+    const option = document.createElement('option');
+    option.innerText = weapon.name;
+    option.value = index;
+    select.add(option);
+  });
+
+  select.addEventListener('change', () => {
+    state.weapon = weapons[select.value];
+    calculateAngle();
+  });
+}
+
+function addRangeToggleButtons() {
+  const container = document.getElementById('rangeToggle');
+
+  ranges.forEach(range => {
+    const { name, index } = range;
+    const button = document.createElement('button');
+    button.innerText = name;
+    button.classList.add('UnitToggle');
+    button.addEventListener('click', () => {
+      state.range.button.classList.toggle('isActive');
+      state.range = range;
+      state.range.button.classList.toggle('isActive');
+      calculateAngle();
+    });
+    range.button = button;
+    container.appendChild(button);
+  });
+  state.range.button.classList.toggle('isActive');
+}
+
 function addUnitToggleButtons() {
   const container = document.getElementById('unitToggle');
 
-  units.forEach((unit, index) => {
+  units.forEach(unit => {
     const { name, convert } = unit;
     const button = document.createElement('button');
     button.innerText = name;
     button.classList.add('UnitToggle');
     button.addEventListener('click', () => {
-      activeUnit.button.classList.toggle('isActive');
-      activeUnit = units[index];
-      activeUnit.button.classList.toggle('isActive');
+      state.unit.button.classList.toggle('isActive');
+      state.unit = unit;
+      state.unit.button.classList.toggle('isActive');
       calculateAngle();
     });
     unit.button = button;
     container.appendChild(button);
   });
+  state.unit.button.classList.toggle('isActive');
 }
 
 function calculateAngle() {
-  const v = Number.parseFloat(document.getElementById('muzzle_velocity').value);
+  const v = state.weapon.muzzleVelocity[state.range.index];
   const x = Number.parseFloat(document.getElementById('distance').value);
-  const y = Number.parseFloat(document.getElementById('height_difference').value);
+  const y = Number.parseFloat(document.getElementById('heightDifference').value);
 
   const v2 = v * v;
 
   const result = ballisticFormula(v, x, y, g);
 
-  document.getElementById('result').value = activeUnit.convert(result[0]).toFixed(3);
-  document.getElementById('altResult').value = activeUnit.convert(result[1]).toFixed(3);
-  document.getElementById('resultUnit').innerText = activeUnit.name;
-  document.getElementById('altResultUnit').innerText = activeUnit.name;
+  document.getElementById('result').value = state.unit.convert(result[0]).toFixed(3);
+  document.getElementById('altResult').value = state.unit.convert(result[1]).toFixed(3);
+  document.getElementById('resultUnit').innerText = state.unit.name;
+  document.getElementById('altResultUnit').innerText = state.unit.name;
 }
 
 
