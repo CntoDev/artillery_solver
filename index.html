@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>CNTO Artillery Calculator App</title>
+<link rel="stylesheet" href="index.css"></link>
+</head>
+<body>
+<div class="AppContainer">
+  <div class="Header">
+    <label>CNTO Artillery Calculator</label>
+  </div>
+  <div class="Parameter">
+    <label class="Label">Weapon:</label>
+    <select class="PlatformSelect" id="weaponPlatform"></select>
+  </div>
+  <div id="rangeToggle" class="Parameter">
+    <label class="Label">Range:</label>
+  </div>
+  <div class="Parameter">
+    <label class="Label">El. diff.:</label>
+    <input class="Field" type="text" id="heightDifference" value="0">
+    <label class="Unit">m</label>
+  </div>
+  <div class="Parameter">
+    <label class="Label">Distance:</label>
+    <input class="Field" type="text" id="distance" value="1000">
+    <label class="Unit">m</label>
+  </div>
+  <div id="unitToggle" class="Parameter">
+    <label class="Label">Unit:</label>
+  </div>
+  <div class="Parameter">
+    <div class="Result">
+      <label class="Label">Angle #1:</label>
+      <input class="Field" type="text" readonly id="result">
+      <label class="Unit" id="resultUnit"></label>
+    </div>
+    <div class="Result">
+      <label class="Label">Angle #2:</label>
+      <input class="Field" type="text" readonly id="altResult">
+      <label class="Unit" id="altResultUnit"></label>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="index.js"></script>
+</body>
+</htm>
