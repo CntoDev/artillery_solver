@@ -1,37 +1,11 @@
 'use strict';
 
 document.getElementById('heightDifference').addEventListener('keydown', calculateAngle);
+document.getElementById('heightDifference').addEventListener('change', calculateAngle);
 document.getElementById('distance').addEventListener('keydown', calculateAngle);
+document.getElementById('distance').addEventListener('change', calculateAngle);
 
 const g = 9.80665;
-
-const ranges = [
-  {
-    name: 'Short',
-    index: 0
-  },
-  {
-    name: 'Medium',
-    index: 1
-  },
-  {
-    name: 'Long',
-    index: 2
-  }
-];
-
-const weapons = [
-  {
-    name: 'M119A2',
-    muzzleVelocity: [152.5, 240, 390],
-    defaultUnit: 'deg',
-  },
-  {
-    name: 'M252',
-    muzzleVelocity: [70, 140, 200],
-    defaultUnit: 'NATO mrad',
-  },
-];
 
 const units = [
   {
@@ -54,6 +28,34 @@ const units = [
     name: 'rad',
     convert: radians => radians,
   },*/
+];
+
+const ranges = [
+  {
+    name: 'Short',
+    index: 0
+  },
+  {
+    name: 'Medium',
+    index: 1
+  },
+  {
+    name: 'Long',
+    index: 2
+  }
+];
+
+const weapons = [
+  {
+    name: 'M119A2',
+    muzzleVelocity: [152.5, 240, 390],
+    defaultUnit: units[0],
+  },
+  {
+    name: 'M252',
+    muzzleVelocity: [70, 140, 200],
+    defaultUnit: units[1],
+  },
 ];
 
 //======================================================================================================================
@@ -82,8 +84,21 @@ function addWeaponPlatforms() {
 
   select.addEventListener('change', () => {
     state.weapon = weapons[select.value];
+    selectUnit(state.weapon.defaultUnit);
     calculateAngle();
   });
+}
+
+function selectUnit(unit) {
+  state.unit.button.classList.toggle('isActive');
+  state.unit = unit;
+  state.unit.button.classList.toggle('isActive');
+}
+
+function selectRange(range) {
+  state.unit.button.classList.toggle('isActive');
+  state.range = range;
+  state.unit.button.classList.toggle('isActive');
 }
 
 function addRangeToggleButtons() {
@@ -95,14 +110,13 @@ function addRangeToggleButtons() {
     button.innerText = name;
     button.classList.add('UnitToggle');
     button.addEventListener('click', () => {
-      state.range.button.classList.toggle('isActive');
-      state.range = range;
-      state.range.button.classList.toggle('isActive');
+      selectRange(range);
       calculateAngle();
     });
     range.button = button;
     container.appendChild(button);
   });
+
   state.range.button.classList.toggle('isActive');
 }
 
@@ -115,9 +129,7 @@ function addUnitToggleButtons() {
     button.innerText = name;
     button.classList.add('UnitToggle');
     button.addEventListener('click', () => {
-      state.unit.button.classList.toggle('isActive');
-      state.unit = unit;
-      state.unit.button.classList.toggle('isActive');
+      selectUnit(unit);
       calculateAngle();
     });
     unit.button = button;
