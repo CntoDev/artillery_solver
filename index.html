@@ -7,18 +7,35 @@
   <link rel="stylesheet" href="index.css"></link>
 </head>
 <body>
-<div class="AppContainer">
+<div id="helpView" class="View">
   <div class="Header">
     <label>CNTO Artillery Calculator</label>
+    <label id="openHelp" style="display: inline-block; float: right;">Back</button>
   </div>
-  <div class="Parameter">
+  <div id="helpText" class="Section">
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vel enim eleifend, eleifend lacus ut,
+       placerat mi. In ac ante convallis diam varius eleifend dictum et lectus. Donec ac nisl faucibus, euismod lectus
+       faucibus, sodales arcu. Donec fringilla venenatis sodales. Proin lacinia odio felis, in maximus metus facilisis
+       in. Maecenas in urna vitae risus pharetra euismod. Phasellus sodales ipsum ac nibh condimentum, et malesuada leo
+       lobortis. Morbi pulvinar a leo nec maximus. Proin varius facilisis egestas.</p>
+    <p>Donec hendrerit vel erat quis elementum. Nullam eleifend nisl augue, id ullamcorper quam maximus eget. Donec
+      purus lectus, congue vitae vulputate vitae, sollicitudin at tellus. Pellentesque erat nibh, molestie vel tellus
+      quis, aliquet feugiat nibh. Proin lobortis eleifend iaculis. In at turpis sit amet dolor efficitur suscipit.
+      Sed eget tristique mi.</p>
+  </div>
+</div>
+<div id="calculatorView" class="View">
+  <div class="Header">
+    <label>CNTO Artillery Calculator</label>
+    <label id="closeHelp" style="display: inline-block; float: right;">Help</button>
+  </div>
+  <div class="Section">
     <label class="Label">Weapon:</label>
     <select class="WeaponPlatform" id="weaponPlatform"></select>
-  </div>
-  <div id="rangeToggle" class="Parameter">
     <label class="Label">Charge:</label>
+    <select class="WeaponPlatform" id="rangeSelect"></select>
   </div>
-  <div class="Parameter">
+  <div class="Section">
     <div>
       <label>Gun location:</label>
     </div>
@@ -32,7 +49,7 @@
     <div id="gunSectors" class="Sectors">
     </div>
   </div>
-  <div class="Parameter">
+  <div class="Section">
     <div>
       <label>Target location:</label>
     </div>
@@ -49,39 +66,36 @@
   <div id="unitToggle" class="Parameter" style="display: none;">
     <label class="Label">Unit:</label>
   </div>
-  <div id="results" class="Parameter">
-    <div style="float: left;">
-      <div class="Result">
-        <label class="Label">Distance:</label>
-        <input class="Field" type="text" readonly id="distance">
-        <label class="Unit">m</label>
-      </div>
-      <div class="Result">
-        <label class="Label">Bearing:</label>
-        <input class="Field" type="text" readonly id="bearing">
-        <label class="Unit ResultUnit"></label>
-      </div>
-      <div class="Result">
-        <label class="Label">Angle:</label>
-        <input class="Field" type="text" readonly id="result">
-        <label class="Unit ResultUnit"></label>
-      </div>
-      <div class="Result">
-        <label class="Label">ETA:</label>
-        <input class="Field" type="text" readonly id="eta">
-        <label class="Unit">s</label>
-      </div>
+  <div id="results" class="Section">
+    <div class="Result">
+      <label class="Label">Distance:</label>
+      <input class="Field" type="text" readonly id="distance">
+      <label class="Unit">m</label>
     </div>
-    <div style="float: left;">
-      <div class="Result">
-        <input class="Field" type="text" readonly id="countdown">
-        <label class="Unit">s</label>
-      </div>
-      <div class="Result">
-        <button id="startCountdown" class="UnitToggle">Countdown</button>
-      </div>
+    <div class="Result">
+      <label class="Label">Bearing:</label>
+      <input class="Field" type="text" readonly id="bearing">
+      <label class="Unit ResultUnit"></label>
     </div>
-    <div style="clear: both"></div>
+    <div class="Result">
+      <label class="Label">Angle:</label>
+      <input class="Field" type="text" readonly id="result">
+      <label class="Unit ResultUnit"></label>
+    </div>
+    <div class="Result">
+      <label class="Label">ETA:</label>
+      <input class="Field" type="text" readonly id="eta">
+      <label class="Unit">s</label>
+    </div>
+  </div>
+  <div id="results" class="Section">
+    <div class="Result">
+      <label>Countdown:</label>
+      <input class="Field" type="text" readonly id="countdown">
+      <label class="Unit">s</label>
+      <button id="startCountdown" class="UnitToggle">Start</button>
+      <button id="stopCountdown" class="UnitToggle">Stop</button>
+    </div>
   </div>
   <div id ="app-root"></div>
 </div>

@@ -10,10 +10,10 @@ const MRAD_IN_RAD = 1000;
 const DEG_IN_RAD = 180 / π;
 
 const QUADRANT_WIDTH = 100;
-
+const SECTOR_PRECISION = 3;
 const SECTOR_RESOLUTION = 3;
 
-
+const SECTOR_ORDER = [7, 8, 9, 4, 5, 6, 1, 2, 3];
 
 const SECTOR_OFFSETS = [[], [0, 2], [1, 2], [2, 2], [0, 1], [1, 1], [2, 1], [0, 0], [1, 0], [2, 0]];
 
@@ -103,7 +103,11 @@ var _extends = Object.assign || function (target) {
 
 //======================================================================================================================
 
+document.getElementById('closeHelp').addEventListener('click', toggleView);
+document.getElementById('openHelp').addEventListener('click', toggleView);
+
 document.getElementById('startCountdown').addEventListener('click', startCountdown);
+document.getElementById('stopCountdown').addEventListener('click', stopCountdown);
 
 document.getElementById('gunElevation').addEventListener('keydown', recomputeSolution);
 document.getElementById('gunElevation').addEventListener('change', recomputeSolution);
@@ -149,42 +153,32 @@ const units = [{
   convert: radians => Math.round(radians * 10000) / 10000
 }];
 
-const ranges = [{
-  name: 'Short',
-  index: 0
-}, {
-  name: 'Medium',
-  index: 1
-}, {
-  name: 'Long',
-  index: 2
-}];
-
 const weapons = [{
   name: 'M119A2',
   muzzleVelocity: [152.5, 240, 390],
   defaultUnit: units[0]
 }, {
-  name: 'M252',
+  name: 'Mk6',
   muzzleVelocity: [70, 140, 200],
   defaultUnit: units[1]
 }];
 
 //======================================================================================================================
 
-const sectorDepth = 3;
-const buttonOrder = [7, 8, 9, 4, 5, 6, 1, 2, 3];
+const views = [document.getElementById('calculatorView'), document.getElementById('helpView')];
 
 const state = {
+  view: views[0],
   weapon: weapons[0],
-  range: ranges[0],
-  unit: units[0],
+  range: 0,
+  unit: weapons[0].defaultUnit,
 
   gun: {
     elevation: 0,
     quadrant: "000000",
     sector: [5, 5, 5]
   },
+
   target: {
     elevation: 0,
     quadrant: "010000",
@@ -198,22 +192,30 @@ const state = {
 };
 window.state = state;
 
+state.view.classList.toggle('isActive');
+
 addWeaponPlatforms();
-addRangeToggleButtons();
+addRanges();
 addUnitToggleButtons();
-addSectorSplit(document.getElementById('gunSectors'), state.gunSectors, sectorDepth);
-addSectorSplit(document.getElementById('targetSectors'), state.targetSectors, sectorDepth);
+addSectorSplit(document.getElementById('gunSectors'), state.gunSectors, SECTOR_PRECISION);
+addSectorSplit(document.getElementById('targetSectors'), state.targetSectors, SECTOR_PRECISION);
 recomputeSolution();
 
 //======================================================================================================================
 
-function addSectorSplit(container, sectors, sectorDepth) {
-  for (let level = 0; level < sectorDepth; ++level) {
+function toggleView() {
+  state.view.classList.toggle('isActive');
+  state.view = state.view === views[0] ? views[1] : views[0];
+  state.view.classList.toggle('isActive');
+}
+
+function addSectorSplit(container, sectors, SECTOR_PRECISION$$1) {
+  for (let level = 0; level < SECTOR_PRECISION$$1; ++level) {
     const group = document.createElement('div');
     group.classList.add('SectorGroup');
     container.appendChild(group);
     let row;
-    buttonOrder.forEach(index => {
+    SECTOR_ORDER.forEach(index => {
       if (index % 3 === 1) {
         row = document.createElement('div');
         group.appendChild(row);
@@ -251,12 +253,6 @@ function selectUnit(unit) {
   state.unit.button.classList.toggle('isActive');
 }
 
-function selectRange(range) {
-  state.range.button.classList.toggle('isActive');
-  state.range = range;
-  state.range.button.classList.toggle('isActive');
-}
-
 function addWeaponPlatforms() {
   const select = document.getElementById('weaponPlatform');
   weapons.forEach((weapon, index) => {
@@ -273,23 +269,21 @@ function addWeaponPlatforms() {
   });
 }
 
-function addRangeToggleButtons() {
-  const container = document.getElementById('rangeToggle');
+function addRanges() {
+  const select = document.getElementById('rangeSelect');
+  select.innerHtml = '';
 
-  ranges.forEach(range => {
-    const { name, index } = range;
-    const button = document.createElement('button');
-    button.innerText = name;
-    button.classList.add('UnitToggle');
-    button.addEventListener('click', () => {
-      selectRange(range);
-      recomputeSolution();
-    });
-    range.button = button;
-    container.appendChild(button);
+  state.weapon.muzzleVelocity.forEach((range, index) => {
+    const option = document.createElement('option');
+    option.innerText = index + 1;
+    option.value = index;
+    select.add(option);
   });
 
-  state.range.button.classList.toggle('isActive');
+  select.addEventListener('change', () => {
+    state.range = select.value;
+    recomputeSolution();
+  });
 }
 
 function addUnitToggleButtons() {
@@ -317,7 +311,7 @@ function recomputeSolution() {
   const targetLocation = _extends({}, quadrantSectorToCoordinates(document.getElementById('targetQuadrant').value, state.targetSectors.map(x => x.index)), {
     elevation: document.getElementById('targetElevation').value
   });
-  const muzzleVelocity = state.weapon.muzzleVelocity[state.range.index];
+  const muzzleVelocity = state.weapon.muzzleVelocity[state.range];
 
   const { distance, bearing, angle, timeOnTarget } = calculateSolution(gunLocation, targetLocation, muzzleVelocity);
 
@@ -327,12 +321,12 @@ function recomputeSolution() {
   document.getElementById('eta').value = Math.round(timeOnTarget * 10) / 10;
   [...document.getElementsByClassName('ResultUnit')].forEach(el => el.innerText = state.unit.name);
 
-  interval && clearInterval(interval);
-  flashInterval && clearInterval(flashInterval);
-  document.getElementById('countdown').value = '';
+  stopCountdown();
 }
 
 function startCountdown() {
+  stopCountdown();
+
   let time = Number.parseFloat(document.getElementById('eta').value) * 10;
   interval && clearInterval(interval);
   flashInterval && clearInterval(flashInterval);
@@ -345,6 +339,12 @@ function startCountdown() {
     if (time === 0 && interval) clearInterval(interval);
     if (time === 150) flash(document.getElementById('results'));
   }, 100);
+}
+
+function stopCountdown() {
+  interval && clearInterval(interval);
+  flashInterval && clearInterval(flashInterval);
+  document.getElementById('countdown').value = '';
 }
 
 function flash(element) {

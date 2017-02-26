@@ -7,10 +7,15 @@ body {
   height: 100%;
 }
 
-.AppContainer {
+.View {
   background: #2c3326;
   padding: 0.5em;
   height: 100%;
+  display: none;
+}
+
+.View.isActive {
+  display: block;
 }
 
 .SectorGroup {
@@ -30,7 +35,7 @@ body {
   font-weight: 700;
 }
 
-.Parameter {
+.Section {
   background: #ffffff;
   margin: 0.25em;
   padding: 0.5em;
