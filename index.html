@@ -1,9 +1,10 @@
 <!doctype html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>CNTO Artillery Calculator App</title>
-<link rel="stylesheet" href="index.css"></link>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>CNTO Artillery Calculator App</title>
+  <link rel="stylesheet" href="index.css"></link>
 </head>
 <body>
 <div class="AppContainer">
@@ -15,34 +16,75 @@
     <select class="WeaponPlatform" id="weaponPlatform"></select>
   </div>
   <div id="rangeToggle" class="Parameter">
-    <label class="Label">Range:</label>
+    <label class="Label">Charge:</label>
   </div>
   <div class="Parameter">
-    <label class="Label">El. diff.:</label>
-    <input class="Field" type="number" id="heightDifference" value="0">
-    <label class="Unit">m (h<sub>gun</sub> - h<sub>target</sub>)</label>
+    <div>
+      <label>Gun location:</label>
+    </div>
+    <div>
+      <label class="Label">Quad.:</label>
+      <input class="InputField" type="number" id="gunQuadrant" value="000000">
+      <label>El.:</label>
+      <input class="InputField" type="number" id="gunElevation" value="0">
+      <label class="Unit">m</label>
+    </div>
+    <div id="gunSectors" class="Sectors">
+    </div>
   </div>
   <div class="Parameter">
-    <label class="Label">Distance:</label>
-    <input class="Field" type="number" id="distance" value="1000">
-    <label class="Unit">m</label>
+    <div>
+      <label>Target location:</label>
+    </div>
+    <div>
+      <label class="Label">Quad.:</label>
+      <input class="InputField" type="number" id="targetQuadrant" value="010000">
+      <label>El.:</label>
+      <input class="InputField" type="number" id="targetElevation" value="0">
+      <label class="Unit">m</label>
+    </div>
+    <div id="targetSectors" class="Sectors">
+    </div>
   </div>
-  <div id="unitToggle" class="Parameter">
+  <div id="unitToggle" class="Parameter" style="display: none;">
     <label class="Label">Unit:</label>
   </div>
-  <div class="Parameter">
-    <div class="Result">
-      <label class="Label">Angle #1:</label>
-      <input class="Field" type="text" readonly id="result">
-      <label class="Unit" id="resultUnit"></label>
+  <div id="results" class="Parameter">
+    <div style="float: left;">
+      <div class="Result">
+        <label class="Label">Distance:</label>
+        <input class="Field" type="text" readonly id="distance">
+        <label class="Unit">m</label>
+      </div>
+      <div class="Result">
+        <label class="Label">Bearing:</label>
+        <input class="Field" type="text" readonly id="bearing">
+        <label class="Unit ResultUnit"></label>
+      </div>
+      <div class="Result">
+        <label class="Label">Angle:</label>
+        <input class="Field" type="text" readonly id="result">
+        <label class="Unit ResultUnit"></label>
+      </div>
+      <div class="Result">
+        <label class="Label">ETA:</label>
+        <input class="Field" type="text" readonly id="eta">
+        <label class="Unit">s</label>
+      </div>
     </div>
-    <div class="Result">
-      <label class="Label">Angle #2:</label>
-      <input class="Field" type="text" readonly id="altResult">
-      <label class="Unit" id="altResultUnit"></label>
+    <div style="float: left;">
+      <div class="Result">
+        <input class="Field" type="text" readonly id="countdown">
+        <label class="Unit">s</label>
+      </div>
+      <div class="Result">
+        <button id="startCountdown" class="UnitToggle">Countdown</button>
+      </div>
     </div>
+    <div style="clear: both"></div>
   </div>
+  <div id ="app-root"></div>
 </div>
-<script type="text/javascript" src="index.js"></script>
+<script type="text/javascript" src="build/app.js"></script>
 </body>
 </html>
