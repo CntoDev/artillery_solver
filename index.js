@@ -59,7 +59,7 @@ const weapons = [
   {
     name: '2B14-1 Podnos',
     muzzleVelocity: [73, 145, 205],
-    defaultUnit: units[1],
+    defaultUnit: units[0],
   },
 ];
 
