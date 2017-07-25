@@ -58,9 +58,14 @@ const weapons = [
     defaultUnit: units[0],
   },
   {
-    name: 'Mk6',
+    name: 'M252',
     muzzleVelocity: [70, 140, 200],
     defaultUnit: units[1],
+  },
+  {
+    name: '2B14-1 Podnos',
+    muzzleVelocity: [73, 145, 205],
+    defaultUnit: units[0],
   },
 ];
 
