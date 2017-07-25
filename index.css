@@ -4,11 +4,27 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
   width: 100%;
+  height: 100%;
 }
 
-.AppContainer {
+.View {
   background: #2c3326;
   padding: 0.5em;
+  height: 100%;
+  display: none;
+}
+
+.View.isActive {
+  display: block;
+}
+
+.SectorGroup {
+  display: inline-block;
+  margin: 0 0.25em;
+}
+
+.Sector {
+  margin: 0;
 }
 
 .Header {
@@ -19,15 +35,20 @@ body {
   font-weight: 700;
 }
 
-.Parameter {
+.Section {
   background: #ffffff;
   margin: 0.25em;
   padding: 0.5em;
 }
 
+.Sectors {
+  margin: 0.25em;
+}
+
+
 .Label {
   display: inline-block;
-  width: 4.5em;
+  width: 4em;
   text-align: right;
   line-height: 1.5em;
 }
@@ -52,20 +73,56 @@ body {
   color: #2c3326;
 }
 
+.Result {
+  margin-bottom: 0.125em;
+}
+
+.Sector {
+  display: inline-block;
+  border: none;
+  background-color: #bd910d;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 20px;
+  width: 32px;
+  height: 32px;
+}
+
+@media (max-width: 320px) {
+  .Sector {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+.Sector.isActive {
+  color: #2c3326;
+}
+
 .Unit {
   display: inline-block;
-  width: 10em;
   text-align: left;
   font-size: x-small;
 }
 
 .Field {
-  width: 5em;
+  width: 4em;
   text-align: right;
   line-height: 1em;
   font-size: 16px;
   padding: 0 2px;
-  margin: 0;
+  margin: 0 0 0 2px;
+  border: 1px solid black;
+  font-family: consolas, monospace;
+}
+
+.InputField {
+  width: 4.5em;
+  text-align: right;
+  line-height: 1em;
+  font-size: 16px;
+  padding: 0 2px;
+  margin: 0 0 0 2px;
   border: 1px solid black;
   font-family: consolas, monospace;
 }
